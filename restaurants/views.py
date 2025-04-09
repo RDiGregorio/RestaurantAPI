@@ -18,6 +18,7 @@ def open_restaurants(request):
 
     # Performance can be improved here by putting the schedule in the database instead of parsing it every time
     # That way, I could just use an efficient query and not load every restaurant
+    # However, there aren't that many restaurants, so it should be fine for now
 
     open_restaurants = []
 
