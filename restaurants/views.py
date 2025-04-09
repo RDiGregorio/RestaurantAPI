@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.http import JsonResponse
 from restaurants.models import Restaurant
+from dateutil.parser import parse
 
 def open_restaurants(request):
     datetime_string = request.GET.get('datetime')
@@ -15,16 +16,7 @@ def open_restaurants(request):
     input_day = input_datetime.strftime('%A')
     input_time = input_datetime.strftime('%H:%M')
 
+    # TODO
+
     open_restaurants = []
-
-    for restaurant in Restaurant.objects.all():
-        hours = restaurant.hours.split(';')
-        for hour in hours:
-            if input_day in hour:
-                time_range = hour.split(' ')[1]
-                start_time, end_time = time_range.split('-')
-                if start_time <= input_time <= end_time:
-                    open_restaurants.append(restaurant.name)
-                    break
-
     return JsonResponse({"open_restaurants": open_restaurants})
