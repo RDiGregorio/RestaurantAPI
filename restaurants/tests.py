@@ -5,6 +5,8 @@ from restaurants.utils import time_range_to_dates
 from restaurants.utils import expand_date_range
 from restaurants.utils import time_range
 from restaurants.utils import date_ranges
+from restaurants.utils import start_date
+from restaurants.utils import end_date
 
 class OpenRestaurantsTestCase(TestCase):
     def setUp(self):
@@ -32,9 +34,15 @@ class RestaurantModelTestCase(TestCase):
         }
         self.assertEqual(self.restaurant.schedule(), expected_schedule)
 
-    #def test_contains_date(self):
-    #    self.assertTrue(self.restaurant.contains_date(datetime(2023, 1, 1, 11, 0)))
-    #    self.assertFalse(self.restaurant.contains_date(datetime(2023, 1, 1, 13, 0)))
+    def test_contains_date(self):
+        # Monday
+        self.assertTrue(self.restaurant.contains_date(datetime(1900, 1, 1, 11, 0)))
+        self.assertFalse(self.restaurant.contains_date(datetime(1900, 1, 1, 13, 0)))
+        # Saturday
+        self.assertTrue(self.restaurant.contains_date(datetime(1900, 1, 6, 13, 0)))
+        # Sunday
+        self.assertFalse(self.restaurant.contains_date(datetime(1900, 1, 7, 11, 0)))
+        self.assertFalse(self.restaurant.contains_date(datetime(1900, 1, 7, 13, 0)))
 
 class UtilTestCase(TestCase):
     def test_time_range_to_dates(self):
@@ -55,3 +63,9 @@ class UtilTestCase(TestCase):
         self.assertEqual(date_ranges("Mon-Fri, Sat 11 am - 12:30 pm"), ["Mon-Fri", "Sat"])
         self.assertEqual(date_ranges("Sun 11 am - 10 pm"), ["Sun"])
         self.assertEqual(date_ranges("Mon"), ["Mon"])
+
+    def test_start_date(self):
+        self.assertEqual(start_date("11 am - 10 pm").time(), datetime(1900, 1, 1, 11, 0).time())
+    
+    def test_end_date(self):
+        self.assertEqual(end_date("11 am - 10:30 pm").time(), datetime(1900, 1, 1, 22, 30).time())

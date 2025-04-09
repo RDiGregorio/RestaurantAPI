@@ -26,5 +26,8 @@ def expand_date_range(range):
         return days[days.index(start):days.index(end[0]) + 1]
     return [start]
 
+def start_date(string):
+    return parse(string.split("-")[0])
 
-
+def end_date(string):
+    return parse(string.split("-")[1])
