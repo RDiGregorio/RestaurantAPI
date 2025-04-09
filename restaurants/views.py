@@ -16,7 +16,13 @@ def open_restaurants(request):
     input_day = input_datetime.strftime('%A')
     input_time = input_datetime.strftime('%H:%M')
 
-    # TODO
+    # Performance can be improved here by putting the schedule in the database instead of parsing it every time
+    # That way, I could just use an efficient query and not load every restaurant
 
     open_restaurants = []
+
+    for restaurant in Restaurant.objects.all():
+        if restaurant.contains_date(input_datetime):
+            open_restaurants.append(restaurant.name)
+
     return JsonResponse({"open_restaurants": open_restaurants})
