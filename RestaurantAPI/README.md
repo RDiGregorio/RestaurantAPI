@@ -1,0 +1,1 @@
+To run the unit tests, use the command `python manage.py test`.
