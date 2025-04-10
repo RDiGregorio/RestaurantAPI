@@ -19,6 +19,10 @@ class OpenRestaurantsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['open_restaurants'], ["Restaurant A"])
 
+    def test_open_restaurants_failure(self):
+        response = self.client.get('/api/open-restaurants/', {'datetime': 'bad date'})
+        self.assertEqual(response.status_code, 400)
+
 class RestaurantModelTestCase(TestCase):
     def setUp(self):
         self.restaurant = Restaurant.objects.create(name="Test Restaurant", hours="Mon-Fri 11 am - 12:30 pm / Sat 1 pm - 2 pm")
